@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 Form.propTypes = {};
 
 function Form(props) {
+  const [error, setError] = useState(false);
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const defaultValue = {
     name: "",
@@ -28,6 +30,7 @@ function Form(props) {
 
   let addNewCart = async (e) => {
     e.preventDefault(e);
+
     await axios.post("http://localhost:3030/DB_CARD", inputData);
     const path = "/";
     navigate(path);
