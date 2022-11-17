@@ -11,7 +11,7 @@ function CartItem(props) {
         <div className="card-body">
           <img src={props.img} alt="" />
           <h5 className="card-title">{props.name}</h5>
-          <p className="card-text">{props.price}</p>
+          <h5 className="card-text">{props.price}</h5>
           <Button class="btn btn-success" value="add to cart" />
         </div>
       </div>

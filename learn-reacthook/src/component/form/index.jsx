@@ -84,6 +84,8 @@ function Form(props) {
     const path = "/";
     navigate(path);
   };
+
+  let resetForm = (e) => {};
   return (
     <div className="row justify-content-center">
       <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 my-2 ">
@@ -92,6 +94,7 @@ function Form(props) {
             <label>Name</label>
             <input
               type="text"
+              value={inputData.name}
               onChange={handelOnChange}
               name="name"
               class="form-control"
@@ -102,6 +105,7 @@ function Form(props) {
             <label>Price</label>
             <input
               type="text"
+              value={inputData.price}
               onChange={handelOnChange}
               name="price"
               class="form-control"
@@ -112,6 +116,7 @@ function Form(props) {
             <label>Image</label>
             <input
               type="text"
+              value={inputData.img}
               onChange={handelOnChange}
               name="img"
               class="form-control"
@@ -120,6 +125,9 @@ function Form(props) {
           </div>
           <p className="">{msgError.duplicate}</p>
           <Button class="btn btn-success" value="save" />
+          <button className="btn btn-primary mx-2" onSubmit={resetForm}>
+            Reset
+          </button>
         </form>
       </div>
     </div>
