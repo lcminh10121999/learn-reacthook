@@ -125,9 +125,9 @@ function Form(props) {
           </div>
           <p className="">{msgError.duplicate}</p>
           <Button class="btn btn-success" value="save" />
-          <button className="btn btn-primary mx-2" onSubmit={resetForm}>
+          {/* <button className="btn btn-primary mx-2" onClick={resetForm}>
             Reset
-          </button>
+          </button> */}
         </form>
       </div>
     </div>
