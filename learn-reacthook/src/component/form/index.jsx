@@ -6,15 +6,29 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import productApi from "../../api/todo.jsx";
+import { useEffect } from "react";
 Form.propTypes = {};
 
 function Form(props) {
   const [msgError, setMsgError] = useState({});
+  const [listItem, setListItem] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await productApi.getAll();
+      setListItem(data);
+    };
+    getData();
+  }, []);
+
+  // console.log(listItem);
   const errors = {
     name: "",
     price: "",
     img: "",
+    duplicate: "",
   };
   const defaultValue = {
     name: "",
@@ -30,23 +44,6 @@ function Form(props) {
       ...inputData,
       [e.target.name]: e.target.value,
     });
-    if (!inputData.name) {
-      errors.name = "không được rỗng";
-    }
-    if (!inputData.price) {
-      errors.price = "không được rỗng";
-    }
-    if (!inputData.img) {
-      errors.img = "không được rỗng";
-    }
-    if (isNaN(inputData.price)) {
-      errors.price = "phải là số";
-    }
-    setMsgError(errors);
-
-    if (!errors == "") {
-      return;
-    }
   };
 
   let addNewCart = async (e) => {
@@ -65,10 +62,24 @@ function Form(props) {
       errors.price = "phải là số";
     }
     setMsgError(errors);
-
-    if (!errors == "") {
+    listItem.map((item, index) => {
+      if (
+        inputData.name == item.name &&
+        inputData.price == item.price &&
+        inputData.img == item.img
+      ) {
+        errors.duplicate = "sản phẩm đã tồn tại";
+      }
+    });
+    if (
+      !errors.name == "" ||
+      !errors.price == "" ||
+      !errors.img == "" ||
+      !errors.duplicate == ""
+    ) {
       return;
     }
+
     await axios.post("http://localhost:3030/DB_CARD", inputData);
     const path = "/";
     navigate(path);
@@ -107,6 +118,7 @@ function Form(props) {
             ></input>
             <p>{msgError.img}</p>
           </div>
+          <p className="">{msgError.duplicate}</p>
           <Button class="btn btn-success" value="save" />
         </form>
       </div>
