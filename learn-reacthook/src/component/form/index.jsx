@@ -9,15 +9,20 @@ import { useNavigate } from "react-router-dom";
 Form.propTypes = {};
 
 function Form(props) {
-  const [error, setError] = useState(false);
-  const [msg, setMsg] = useState("");
+  const [msgError, setMsgError] = useState({});
   const navigate = useNavigate();
+  const errors = {
+    name: "",
+    price: "",
+    img: "",
+  };
   const defaultValue = {
     name: "",
     price: "",
     img: "",
     id: uuidv4(),
   };
+
   const [inputData, serInputData] = useState(defaultValue);
 
   let handelOnChange = (e) => {
@@ -25,12 +30,45 @@ function Form(props) {
       ...inputData,
       [e.target.name]: e.target.value,
     });
-    console.log(inputData);
+    if (!inputData.name) {
+      errors.name = "không được rỗng";
+    }
+    if (!inputData.price) {
+      errors.price = "không được rỗng";
+    }
+    if (!inputData.img) {
+      errors.img = "không được rỗng";
+    }
+    if (isNaN(inputData.price)) {
+      errors.price = "phải là số";
+    }
+    setMsgError(errors);
+
+    if (!errors == "") {
+      return;
+    }
   };
 
   let addNewCart = async (e) => {
     e.preventDefault(e);
 
+    if (!inputData.name) {
+      errors.name = "không được rỗng";
+    }
+    if (!inputData.price) {
+      errors.price = "không được rỗng";
+    }
+    if (!inputData.img) {
+      errors.img = "không được rỗng";
+    }
+    if (isNaN(inputData.price)) {
+      errors.price = "phải là số";
+    }
+    setMsgError(errors);
+
+    if (!errors == "") {
+      return;
+    }
     await axios.post("http://localhost:3030/DB_CARD", inputData);
     const path = "/";
     navigate(path);
@@ -47,6 +85,7 @@ function Form(props) {
               name="name"
               class="form-control"
             ></input>
+            <p>{msgError.name}</p>
           </div>
           <div class="form-group d-flex">
             <label>Price</label>
@@ -56,6 +95,7 @@ function Form(props) {
               name="price"
               class="form-control"
             ></input>
+            <p>{msgError.price}</p>
           </div>
           <div class="form-group d-flex">
             <label>Image</label>
@@ -65,6 +105,7 @@ function Form(props) {
               name="img"
               class="form-control"
             ></input>
+            <p>{msgError.img}</p>
           </div>
           <Button class="btn btn-success" value="save" />
         </form>
